@@ -1,0 +1,58 @@
+.movie-hero {
+  height: 80vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  color: white;
+}
+
+.movie-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
+}
+
+.movie-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+.movie-container {
+  max-width: 1100px;
+  margin: auto;
+  margin-top: 40px;
+}
+
+.movie-poster {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.movie-poster:hover {
+  transform: scale(1.05);
+}
+
+.movie-info {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.movie-meta {
+  color: #bbb;
+  margin-bottom: 10px;
+}
+
+.badge-custom {
+  background-color: #444;
+  margin-right: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}

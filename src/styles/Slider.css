@@ -1,0 +1,22 @@
+.slider {
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 20%;
+  left: 10%;
+  max-width: 600px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
+}
+
+.overlay h1 {
+  font-size: 3rem;
+}
+
+.overlay p {
+  color: #ccc;
+}
