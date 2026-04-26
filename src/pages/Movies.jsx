@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Movie from "../components/Movie";
-import Loader from "../components/Loader";
-import { MovieContext } from "../context/MovieContext";
+import Footer from "../components/footer";
 
 const apiKey = "&api_key=9813ce01a72ca1bd2ae25f091898b1c7";
 const url = "https://api.themoviedb.org/3";
@@ -17,7 +16,8 @@ export default function Movies() {
       .then((res) => res.json())
       .then((data) => {
         setMovies(data.results);
-      });
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   return (
@@ -30,8 +30,10 @@ export default function Movies() {
             name={m.title}
             desc={m.overview}
             img={imgPath + m.poster_path}
+            isWatchlist={false}
           />
         ))}
+        <Footer />
       </div>
     </div>
   );

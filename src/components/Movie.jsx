@@ -1,19 +1,31 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { MovieContext } from "../context/MovieContext";
 
-const Movie = ({ name, desc, img, id, isWatchlist, onDelete }) => {
-  const { addToWatchlist } = useContext(MovieContext);
+import { useDispatch } from "react-redux";
+import { addToWatchlist, removeFromWatchlist } from "../redux/watchlistSlice";
 
+const Movie = ({ name, desc, img, id, tmdbId, isWatchlist }) => {
+  const dispatch = useDispatch();
   const [added, setAdded] = useState(false);
 
-  const handleAdd = () => {
-    const movie = { id, name, desc, img };
+  const movieId = isWatchlist ? tmdbId : id;
 
-    addToWatchlist(movie).then(() => {
-      setAdded(true);
-      setTimeout(() => setAdded(false), 600);
-    });
+  const handleAdd = () => {
+    dispatch(
+      addToWatchlist({
+        tmdbId: id,
+        name,
+        desc,
+        img,
+      }),
+    );
+
+    setAdded(true);
+    setTimeout(() => setAdded(false), 800);
+  };
+
+  const handleRemove = () => {
+    dispatch(removeFromWatchlist(id));
   };
 
   return (
@@ -22,30 +34,23 @@ const Movie = ({ name, desc, img, id, isWatchlist, onDelete }) => {
         <img src={img} className="card-img-top" alt={name} />
 
         <div className="card-body d-flex flex-column">
-          <h5>{name}</h5>
-          <p>{desc}</p>
+          <h5 className="card-title">{name}</h5>
+          <p className="card-text">{desc}</p>
 
-          <Link to={`/movie/${id}`} className="btn btn-dark mt-auto">
-            Details
+          <Link to={`/movie/${movieId}`} className="btn btn-dark mt-auto">
+            View Details
           </Link>
 
-          {!isWatchlist && (
+          {isWatchlist ? (
+            <button onClick={handleRemove} className="btn btn-danger mt-2">
+              Remove from Watchlist
+            </button>
+          ) : (
             <button
               onClick={handleAdd}
-              className={`btn mt-2 ${
-                added ? "btn-success added-animation" : "btn-warning"
-              }`}
+              className={`btn mt-2 ${added ? "btn-success" : "btn-warning"}`}
             >
-              {added ? "✔ Added" : "Add to Watchlist"}
-            </button>
-          )}
-
-          {isWatchlist && (
-            <button
-              onClick={() => onDelete(id)}
-              className="btn btn-danger mt-2"
-            >
-              Remove
+              {added ? "Added ✓" : "Add to Watchlist"}
             </button>
           )}
         </div>

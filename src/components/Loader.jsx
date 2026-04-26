@@ -1,20 +1,28 @@
-import { useEffect, useState } from "react";
-import Lottie from "lottie-react";
+import React from "react";
+import loadingVideo from "../assets/loading.webm";
 
-export default function Loader() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    fetch("/src/assets/loading.json")
-      .then((res) => res.json())
-      .then(setData);
-  }, []);
-
-  if (!data) return null;
-
+const Loader = () => {
   return (
-    <div className="loader-container">
-      <Lottie animationData={data} loop />
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#0f0f0f",
+      }}
+    >
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{ width: 180, height: 180 }}
+      >
+        <source src={loadingVideo} type="video/webm" />
+      </video>
     </div>
   );
-}
+};
+
+export default Loader;

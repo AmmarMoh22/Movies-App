@@ -1,6 +1,7 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/MovieDetails.css";
+import Loader from "../components/Loader";
 
 const apiKey = "api_key=9813ce01a72ca1bd2ae25f091898b1c7";
 const url = "https://api.themoviedb.org/3";
@@ -9,19 +10,18 @@ const POSTER_SIZE = "w500";
 const BACKDROP_SIZE = "original";
 
 export default function MovieDetails() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id, tmdbId } = useParams();
 
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
-    fetch(`${url}/movie/${id}?${apiKey}`)
+    fetch(`${url}/movie/${tmdbId ? tmdbId : id}?${apiKey}`)
       .then((res) => res.json())
       .then((data) => setMovie(data));
-  }, [id]);
+  }, [id, tmdbId]);
 
-  if (!movie) return <h2 className="text-center mt-5">Loading...</h2>;
-
+  if (!movie) return <Loader />;
+  console.log(movie);
   const posterUrl = movie.poster_path
     ? IMG_BASE + POSTER_SIZE + movie.poster_path
     : "";

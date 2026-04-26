@@ -1,39 +1,43 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { fetchWatchlist } from "../redux/watchlistSlice";
 import Movie from "../components/Movie";
-import { MovieContext } from "../context/MovieContext";
+import Footer from "../components/footer";
+import Loader from "../components/Loader";
 
 export default function Watchlist() {
-  const { getWatchlist, removeFromWatchlist } = useContext(MovieContext);
+  const dispatch = useDispatch();
 
-  const [movies, setMovies] = useState([]);
+  const { items, loading } = useSelector((state) => state.watchlist);
 
   useEffect(() => {
-    getWatchlist().then((data) => setMovies(data));
-  }, []);
-
-  const handleDelete = (id) => {
-    removeFromWatchlist(id).then(() => {
-      setMovies((prev) => prev.filter((m) => m.id !== id));
-    });
-  };
+    dispatch(fetchWatchlist());
+  }, [dispatch]);
 
   return (
     <div className="container mt-5">
-      <h2>My Watchlist</h2>
-
       <div className="row">
-        {movies.map((m) => (
-          <Movie
-            key={m.id}
-            id={m.id}
-            name={m.name}
-            desc={m.desc}
-            img={m.img}
-            isWatchlist
-            onDelete={handleDelete}
-          />
-        ))}
+        {loading ? (
+          <Loader />
+        ) : items.length === 0 ? (
+          <h3>No movies in watchlist</h3>
+        ) : (
+          items.map((m) => (
+            <Movie
+              key={m.id}
+              id={m.id}
+              tmdbId={m.tmdbId}
+              name={m.name}
+              desc={m.desc}
+              img={m.img}
+              isWatchlist={true}
+            />
+          ))
+        )}
       </div>
+
+      <Footer />
     </div>
   );
 }

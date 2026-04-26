@@ -1,14 +1,16 @@
-import React, { useState, useContext } from "react";
-import { MovieContext } from "../context/MovieContext";
+import { TextField, Button, Container, Typography } from "@mui/material";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addToWatchlist } from "../redux/watchlistSlice";
 
 export default function AddMovieForm() {
-  const { addToWatchlist } = useContext(MovieContext);
+  const dispatch = useDispatch();
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name || !desc || !img) {
@@ -17,48 +19,104 @@ export default function AddMovieForm() {
     }
 
     const newMovie = {
-      id: Date.now(),
       name,
       desc,
       img,
     };
 
-    addToWatchlist(newMovie).then(() => {
+    try {
+      await dispatch(addToWatchlist(newMovie)).unwrap();
+
       alert("Movie added to watchlist!");
+
       setName("");
       setDesc("");
       setImg("");
-    });
+    } catch (error) {
+      alert("Failed to add movie");
+    }
+  };
+
+  const inputStyle = {
+    "& .MuiOutlinedInput-root": {
+      color: "white",
+      "& fieldset": {
+        borderColor: "white",
+      },
+      "&:hover fieldset": {
+        borderColor: "#fbc02d",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#fbc02d",
+      },
+    },
+    "& .MuiInputLabel-root": {
+      color: "white",
+    },
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: "#fbc02d",
+    },
   };
 
   return (
-    <div className="container mt-5">
-      <h3>Add Movie to Watchlist</h3>
+    <Container maxWidth="sm" sx={{ mt: 5, px: { xs: 2, sm: 4 } }}>
+      <Typography
+        variant="h4"
+        sx={{
+          color: "white",
+          textAlign: "center",
+          fontSize: { xs: "1.5rem", sm: "2rem" },
+        }}
+        gutterBottom
+      >
+        Add Movie
+      </Typography>
 
       <form onSubmit={handleSubmit}>
-        <input
-          className="form-control mb-2"
-          placeholder="Movie Name"
+        <TextField
+          fullWidth
+          label="Movie Name"
+          margin="normal"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          sx={inputStyle}
         />
 
-        <input
-          className="form-control mb-2"
-          placeholder="Description"
+        <TextField
+          fullWidth
+          label="Description"
+          margin="normal"
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
+          sx={inputStyle}
         />
 
-        <input
-          className="form-control mb-2"
-          placeholder="Image URL"
+        <TextField
+          fullWidth
+          label="Image URL"
+          margin="normal"
           value={img}
           onChange={(e) => setImg(e.target.value)}
+          sx={inputStyle}
         />
 
-        <button className="btn btn-primary">Add to Watchlist</button>
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{
+            mt: 2,
+            backgroundColor: "#fbc02d",
+            color: "#000",
+            fontWeight: "bold",
+            "&:hover": {
+              backgroundColor: "#805208",
+            },
+          }}
+        >
+          Add to Watchlist
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 }

@@ -78,6 +78,21 @@
   color: white;
 }
 
+.watchlist-badge {
+  margin-left: 6px;
+  background-color: #fbc02d;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+  display: inline-block;
+  min-width: 20px;
+  text-align: center;
+  position: relative;
+  top: -2px;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     gap: 15px;

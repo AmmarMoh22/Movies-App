@@ -1,17 +1,4 @@
 {
-  "watchlist": [
-    {
-      "id": "71L-e9xQ73E",
-      "name": "The Godfather",
-      "desc": "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
-      "img": "https://image.tmdb.org/t/p/w500//3bhkrj58Vtu7enYsRolD1fZdja1.jpg"
-    },
-    {
-      "id": "RnKhMrepNLw",
-      "name": "The Godfather Part II",
-      "desc": "In the continuing saga of the Corleone crime family, a young Vito Corleone grows up in Sicily and in 1910s New York. In the 1950s, Michael Corleone attempts to expand the family business into Las Vegas, Hollywood and Cuba.",
-      "img": "https://image.tmdb.org/t/p/w500//hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg"
-    }
-  ],
+  "watchlist": [],
   "$schema": "./node_modules/json-server/schema.json"
 }
