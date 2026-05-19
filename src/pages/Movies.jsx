@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Movie from "../components/Movie";
 import Footer from "../components/footer";
 
 const apiKey = "&api_key=9813ce01a72ca1bd2ae25f091898b1c7";
-const url = "https://api.themoviedb.org/3";
+const apiUrl = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc" + apiKey;
 const imgPath = "https://image.tmdb.org/t/p/w500/";
-const path = "/discover/movie?sort_by=popularity.desc";
-const apiUrl = url + path + apiKey;
 
 export default function Movies() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     fetch(apiUrl)
-      .then((res) => res.json())
-      .then((data) => {
-        setMovies(data.results);
-      })
-      .catch((err) => console.error(err));
+      .then((r) => r.json())
+      .then((d) => setMovies(d.results ?? []))
+      .catch(console.error);
   }, []);
 
   return (
     <div className="container mt-5">
+      <h2 className="section-heading">Popular Now</h2>
       <div className="row">
         {movies.map((m) => (
           <Movie
@@ -33,8 +30,8 @@ export default function Movies() {
             isWatchlist={false}
           />
         ))}
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 }

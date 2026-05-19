@@ -93,7 +93,7 @@ export default function Register() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 5, px: { xs: 2, sm: 4 } }}>
+    <Container maxWidth="sm" sx={{ mt: 9, px: { xs: 2, sm: 4 } }}>
       <Typography
         variant="h4"
         sx={{

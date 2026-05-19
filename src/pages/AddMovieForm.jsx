@@ -24,17 +24,11 @@ export default function AddMovieForm() {
       img,
     };
 
-    try {
-      await dispatch(addToWatchlist(newMovie)).unwrap();
-
-      alert("Movie added to watchlist!");
-
-      setName("");
-      setDesc("");
-      setImg("");
-    } catch (error) {
-      alert("Failed to add movie");
-    }
+    dispatch(addToWatchlist(newMovie));
+    alert("Movie added to watchlist!");
+    setName("");
+    setDesc("");
+    setImg("");
   };
 
   const inputStyle = {
@@ -59,7 +53,7 @@ export default function AddMovieForm() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 5, px: { xs: 2, sm: 4 } }}>
+    <Container maxWidth="sm" sx={{ mt: 9, px: { xs: 2, sm: 4 } }}>
       <Typography
         variant="h4"
         sx={{

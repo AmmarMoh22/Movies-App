@@ -1,27 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToWatchlist, removeFromWatchlist } from "../redux/watchlistSlice";
+import "../styles/Movie.css";
 
 const Movie = ({ name, desc, img, id, tmdbId, isWatchlist }) => {
   const dispatch = useDispatch();
   const [added, setAdded] = useState(false);
-
+  const watchlist = useSelector((state) => state.watchlist.items);
   const movieId = isWatchlist ? tmdbId : id;
+  const alreadyInWatchlist = watchlist.some(
+    (m) => m.tmdbId === id || m.id === id
+  );
 
   const handleAdd = () => {
-    dispatch(
-      addToWatchlist({
-        tmdbId: id,
-        name,
-        desc,
-        img,
-      }),
-    );
-
+    dispatch(addToWatchlist({ tmdbId: id, name, desc, img }));
     setAdded(true);
-    setTimeout(() => setAdded(false), 800);
+    setTimeout(() => setAdded(false), 1000);
   };
 
   const handleRemove = () => {
@@ -29,28 +24,35 @@ const Movie = ({ name, desc, img, id, tmdbId, isWatchlist }) => {
   };
 
   return (
-    <div className="col-md-3 mb-4">
-      <div className="card h-100 shadow-sm">
-        <img src={img} className="card-img-top" alt={name} />
+    <div className="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div className="movie-card">
+        <div className="movie-card-img-wrap">
+          <img src={img} className="movie-card-img" alt={name} loading="lazy" />
+          <div className="movie-card-overlay">
+            <Link to={`/movie/${movieId}`} className="overlay-btn">
+              View Details
+            </Link>
+          </div>
+        </div>
 
-        <div className="card-body d-flex flex-column">
-          <h5 className="card-title">{name}</h5>
-          <p className="card-text">{desc}</p>
-
-          <Link to={`/movie/${movieId}`} className="btn btn-dark mt-auto">
-            View Details
-          </Link>
+        <div className="movie-card-body">
+          <h5 className="movie-card-title">{name}</h5>
+          <p className="movie-card-desc">{desc}</p>
 
           {isWatchlist ? (
-            <button onClick={handleRemove} className="btn btn-danger mt-2">
-              Remove from Watchlist
+            <button onClick={handleRemove} className="btn-movie btn-remove">
+              ✕ Remove
+            </button>
+          ) : alreadyInWatchlist ? (
+            <button className="btn-movie btn-added" disabled>
+              ✓ In Watchlist
             </button>
           ) : (
             <button
               onClick={handleAdd}
-              className={`btn mt-2 ${added ? "btn-success" : "btn-warning"}`}
+              className={`btn-movie ${added ? "btn-added" : "btn-add"}`}
             >
-              {added ? "Added ✓" : "Add to Watchlist"}
+              {added ? "✓ Added!" : "+ Watchlist"}
             </button>
           )}
         </div>

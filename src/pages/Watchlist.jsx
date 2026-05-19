@@ -1,42 +1,45 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-import { fetchWatchlist } from "../redux/watchlistSlice";
+import { removeFromWatchlist } from "../redux/watchlistSlice";
 import Movie from "../components/Movie";
 import Footer from "../components/footer";
-import Loader from "../components/Loader";
 
 export default function Watchlist() {
-  const dispatch = useDispatch();
-
-  const { items, loading } = useSelector((state) => state.watchlist);
-
-  useEffect(() => {
-    dispatch(fetchWatchlist());
-  }, [dispatch]);
+  const { items } = useSelector((state) => state.watchlist);
 
   return (
-    <div className="container mt-5">
-      <div className="row">
-        {loading ? (
-          <Loader />
-        ) : items.length === 0 ? (
-          <h3>No movies in watchlist</h3>
-        ) : (
-          items.map((m) => (
-            <Movie
-              key={m.id}
-              id={m.id}
-              tmdbId={m.tmdbId}
-              name={m.name}
-              desc={m.desc}
-              img={m.img}
-              isWatchlist={true}
-            />
-          ))
-        )}
+    <div className="page-wrapper">
+      <div className="page-header">
+        <h1 className="page-title">My Watchlist</h1>
+        <p className="page-subtitle">
+          {items.length === 0
+            ? "Nothing saved yet — browse movies and hit Add to Watchlist"
+            : `${items.length} movie${items.length !== 1 ? "s" : ""} saved`}
+        </p>
       </div>
 
+      <div className="container">
+        {items.length === 0 ? (
+          <div className="empty-state">
+            <span className="empty-icon">🎬</span>
+            <p>Your watchlist is empty</p>
+          </div>
+        ) : (
+          <div className="row">
+            {items.map((m) => (
+              <Movie
+                key={m.id}
+                id={m.id}
+                tmdbId={m.tmdbId}
+                name={m.name}
+                desc={m.desc}
+                img={m.img}
+                isWatchlist={true}
+              />
+            ))}
+          </div>
+        )}
+      </div>
       <Footer />
     </div>
   );

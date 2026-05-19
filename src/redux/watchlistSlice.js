@@ -1,68 +1,52 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-const API_URL = "http://localhost:3001/watchlist";
+const STORAGE_KEY = "movies_watchlist";
 
-export const fetchWatchlist = createAsyncThunk(
-  "watchlist/fetchWatchlist",
-  async () => {
-    const res = await fetch(API_URL);
-    return await res.json();
-  },
-);
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
 
-export const addToWatchlist = createAsyncThunk(
-  "watchlist/addToWatchlist",
-  async (movie) => {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(movie),
-    });
-
-    return await res.json();
-  },
-);
-
-export const removeFromWatchlist = createAsyncThunk(
-  "watchlist/removeFromWatchlist",
-  async (id) => {
-    await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-    });
-    return id;
-  },
-);
+function saveToStorage(items) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  } catch {
+    console.log("error");
+  }
+}
 
 const watchlistSlice = createSlice({
   name: "watchlist",
   initialState: {
-    items: [],
+    items: loadFromStorage(),
     loading: false,
   },
-  reducers: {},
-
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchWatchlist.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchWatchlist.fulfilled, (state, action) => {
-        state.loading = false;
-        state.items = action.payload;
-      })
-
-      .addCase(addToWatchlist.fulfilled, (state, action) => {
-        state.items.push(action.payload);
-      })
-
-      .addCase(removeFromWatchlist.fulfilled, (state, action) => {
-        state.items = state.items.filter(
-          (movie) => movie.id !== action.payload,
-        );
-      });
+  reducers: {
+    addToWatchlist(state, action) {
+      const movie = action.payload;
+      const exists = state.items.some(
+        (m) => (movie.tmdbId && m.tmdbId === movie.tmdbId) || m.id === movie.id,
+      );
+      if (!exists) {
+        const newItem = {
+          ...movie,
+          id: movie.tmdbId ?? movie.id ?? Date.now(),
+        };
+        state.items.push(newItem);
+        saveToStorage(state.items);
+      }
+    },
+    removeFromWatchlist(state, action) {
+      const id = action.payload;
+      state.items = state.items.filter((m) => m.id !== id && m.tmdbId !== id);
+      saveToStorage(state.items);
+    },
   },
 });
 
+export const { addToWatchlist, removeFromWatchlist } = watchlistSlice.actions;
 export default watchlistSlice.reducer;
