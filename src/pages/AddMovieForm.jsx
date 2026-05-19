@@ -1,116 +1,102 @@
-import { TextField, Button, Container, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToWatchlist } from "../redux/watchlistSlice";
+import Toast from "../components/Toast";
+import Footer from "../components/footer";
 
 export default function AddMovieForm() {
   const dispatch = useDispatch();
-
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [img, setImg] = useState("");
+  const [img,  setImg]  = useState("");
+  const [toast, setToast] = useState({ open: false, message: "", severity: "success" });
 
-  const handleSubmit = async (e) => {
+  const showToast = (message, severity = "success") => {
+    setToast({ open: true, message, severity });
+  };
+
+  const closeToast = () => setToast((t) => ({ ...t, open: false }));
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!name || !desc || !img) {
-      alert("Invalid input");
+    if (!name.trim() || !desc.trim() || !img.trim()) {
+      showToast("Please fill in all fields.", "warning");
       return;
     }
 
-    const newMovie = {
-      name,
-      desc,
-      img,
-    };
-
-    dispatch(addToWatchlist(newMovie));
-    alert("Movie added to watchlist!");
+    dispatch(addToWatchlist({ name: name.trim(), desc: desc.trim(), img: img.trim() }));
+    showToast(`"${name.trim()}" added to your watchlist!`, "success");
     setName("");
     setDesc("");
     setImg("");
   };
 
-  const inputStyle = {
-    "& .MuiOutlinedInput-root": {
-      color: "white",
-      "& fieldset": {
-        borderColor: "white",
-      },
-      "&:hover fieldset": {
-        borderColor: "#fbc02d",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#fbc02d",
-      },
-    },
-    "& .MuiInputLabel-root": {
-      color: "white",
-    },
-    "& .MuiInputLabel-root.Mui-focused": {
-      color: "#fbc02d",
-    },
-  };
-
   return (
-    <Container maxWidth="sm" sx={{ mt: 9, px: { xs: 2, sm: 4 } }}>
-      <Typography
-        variant="h4"
-        sx={{
-          color: "white",
-          textAlign: "center",
-          fontSize: { xs: "1.5rem", sm: "2rem" },
-        }}
-        gutterBottom
-      >
-        Add Movie
-      </Typography>
+    <div className="page-wrapper">
+      <div className="page-header">
+        <h1 className="page-title">Add a Movie</h1>
+        <p className="page-subtitle">Manually add a title to your watchlist</p>
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          label="Movie Name"
-          margin="normal"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          sx={inputStyle}
-        />
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-md-7 col-lg-6">
+            <form onSubmit={handleSubmit} className="add-movie-form">
 
-        <TextField
-          fullWidth
-          label="Description"
-          margin="normal"
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-          sx={inputStyle}
-        />
+              <div className="form-field">
+                <label className="form-label">Movie Name</label>
+                <input
+                  className="form-input"
+                  type="text"
+                  placeholder="e.g. Inception"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
 
-        <TextField
-          fullWidth
-          label="Image URL"
-          margin="normal"
-          value={img}
-          onChange={(e) => setImg(e.target.value)}
-          sx={inputStyle}
-        />
+              <div className="form-field">
+                <label className="form-label">Description</label>
+                <textarea
+                  className="form-input"
+                  rows={4}
+                  placeholder="Brief description of the movie…"
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                />
+              </div>
 
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{
-            mt: 2,
-            backgroundColor: "#fbc02d",
-            color: "#000",
-            fontWeight: "bold",
-            "&:hover": {
-              backgroundColor: "#805208",
-            },
-          }}
-        >
-          Add to Watchlist
-        </Button>
-      </form>
-    </Container>
+              <div className="form-field">
+                <label className="form-label">Poster Image URL</label>
+                <input
+                  className="form-input"
+                  type="url"
+                  placeholder="https://example.com/poster.jpg"
+                  value={img}
+                  onChange={(e) => setImg(e.target.value)}
+                />
+                {img && (
+                  <img
+                    src={img}
+                    alt="Poster preview"
+                    className="poster-preview"
+                    onError={(e) => { e.target.style.display = "none"; }}
+                    onLoad={(e) => { e.target.style.display = "block"; }}
+                  />
+                )}
+              </div>
+
+              <button type="submit" className="btn-submit">
+                + Add to Watchlist
+              </button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <Toast toast={toast} onClose={closeToast} />
+      <Footer />
+    </div>
   );
 }
