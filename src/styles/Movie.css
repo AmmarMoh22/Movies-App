@@ -10,11 +10,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  /* NO transform on hover — translateY shifts the card on tap,
+     causing the button to move away from the finger mid-press */
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .movie-card:hover {
-  transform: translateY(-6px);
   box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(232,184,75,0.15);
   border-color: rgba(232,184,75,0.2);
 }
@@ -38,6 +39,7 @@
   transform: scale(1.05);
 }
 
+/* Overlay — desktop mouse hover only */
 .movie-card-overlay {
   position: absolute;
   inset: 0;
@@ -46,7 +48,7 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  pointer-events: none; /* invisible overlay must never eat touches */
+  pointer-events: none; /* never intercept touches when invisible */
   transition: opacity 0.25s ease;
 }
 
@@ -63,12 +65,11 @@
   font-size: 0.88rem;
   border-radius: 8px;
   letter-spacing: 0.3px;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s;
 }
 
 .overlay-btn:hover {
   background: #f5ca6a;
-  transform: scale(1.04);
 }
 
 /* ── Card body ── */
@@ -77,13 +78,13 @@
   display: flex;
   flex-direction: column;
   padding: 16px;
+  gap: 8px;
 }
 
 .movie-card-title {
   font-weight: 600;
   font-size: 0.95rem;
   color: #f0f4f8;
-  margin-bottom: 8px;
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -100,7 +101,6 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-bottom: 14px;
 }
 
 /* ── Buttons ── */
@@ -113,9 +113,13 @@
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s;
   letter-spacing: 0.2px;
-  margin-top: auto;
+  text-align: center;
+  display: block;
+  /* Removes 300ms tap delay and prevents double-fire on mobile */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .btn-add {
@@ -124,7 +128,8 @@
   border: 1px solid rgba(232, 184, 75, 0.25);
 }
 
-.btn-add:hover {
+.btn-add:hover,
+.btn-add:active {
   background: rgba(232, 184, 75, 0.22);
   border-color: rgba(232, 184, 75, 0.5);
 }
@@ -142,57 +147,29 @@
   border: 1px solid rgba(240, 82, 82, 0.2);
 }
 
-.btn-remove:hover {
+.btn-remove:hover,
+.btn-remove:active {
   background: rgba(240, 82, 82, 0.2);
   border-color: rgba(240, 82, 82, 0.4);
 }
 
+/* Always-visible View Details link button */
+.btn-details {
+  background: rgba(255, 255, 255, 0.05);
+  color: #a0b0c0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.btn-details:hover,
+.btn-details:active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f0f4f8;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
 /* ── pop animation ── */
-.added-animation { animation: pop 0.4s ease; }
 @keyframes pop {
   0%   { transform: scale(1); }
   50%  { transform: scale(1.08); }
   100% { transform: scale(1); }
-}
-
-/* ── View Details link — visible only on touch devices ── */
-.mobile-details-btn {
-  display: none;
-  width: 100%;
-  text-align: center;
-  padding: 9px 14px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #f0f4f8;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 10px;
-  transition: background 0.2s;
-}
-
-.mobile-details-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #f0f4f8;
-}
-
-/* ── Touch device overrides ── */
-/* @media (hover: none) targets real touch screens only, not desktop */
-@media (hover: none) {
-  /* Kill the translateY jump — this is what breaks button taps on mobile */
-  .movie-card:hover {
-    transform: none;
-    box-shadow: none;
-    border-color: rgba(255, 255, 255, 0.06);
-  }
-
-  /* Hide the CSS hover overlay — it doesn't respond to touch */
-  .movie-card-overlay {
-    display: none;
-  }
-
-  /* Show the always-visible View Details link instead */
-  .mobile-details-btn {
-    display: block;
-  }
 }

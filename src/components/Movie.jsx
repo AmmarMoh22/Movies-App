@@ -26,10 +26,9 @@ const Movie = ({ name, desc, img, id, tmdbId, isWatchlist }) => {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 mb-4">
       <div className="movie-card">
+        {/* Image — desktop hover overlay sits here */}
         <div className="movie-card-img-wrap">
           <img src={img} className="movie-card-img" alt={name} loading="lazy" />
-
-          {/* Desktop only — revealed on mouse hover */}
           <div className="movie-card-overlay">
             <Link to={`/movie/${movieId}`} className="overlay-btn">
               View Details
@@ -40,11 +39,6 @@ const Movie = ({ name, desc, img, id, tmdbId, isWatchlist }) => {
         <div className="movie-card-body">
           <h5 className="movie-card-title">{name}</h5>
           <p className="movie-card-desc">{desc}</p>
-
-          {/* Mobile only — always visible link (shown via @media hover:none) */}
-          <Link to={`/movie/${movieId}`} className="mobile-details-btn">
-            View Details
-          </Link>
 
           {isWatchlist ? (
             <button onClick={handleRemove} className="btn-movie btn-remove">
@@ -62,6 +56,11 @@ const Movie = ({ name, desc, img, id, tmdbId, isWatchlist }) => {
               {added ? "✓ Added!" : "+ Watchlist"}
             </button>
           )}
+
+          {/* Always-visible View Details — works on every device */}
+          <Link to={`/movie/${movieId}`} className="btn-movie btn-details">
+            View Details
+          </Link>
         </div>
       </div>
     </div>

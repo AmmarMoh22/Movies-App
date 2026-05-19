@@ -27,7 +27,7 @@
 
 /* ── Logo ── */
 .logo a {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: 1.45rem;
   font-weight: 800;
   color: #f0f4f8;
@@ -39,7 +39,9 @@
   transition: color 0.2s;
 }
 
-.logo a:hover { color: var(--accent, #e8b84b); }
+.logo a:hover {
+  color: var(--accent, #e8b84b);
+}
 
 /* ── Desktop nav links ── */
 .nav-links {
@@ -48,6 +50,7 @@
   align-items: center;
   gap: 6px;
   margin: 0;
+  margin-left: 10px;
   padding: 0;
 }
 
@@ -60,7 +63,9 @@
   color: #8b9ab0;
   font-size: 0.92rem;
   font-weight: 500;
-  transition: background 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s;
 }
 
 .nav-links li a:hover,
@@ -91,14 +96,16 @@
   width: 36px;
   height: 36px;
   background: none;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   cursor: pointer;
   padding: 6px;
   transition: border-color 0.2s;
 }
 
-.nav-hamburger:hover { border-color: rgba(255,255,255,0.25); }
+.nav-hamburger:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+}
 
 .hamburger-line {
   display: block;
@@ -106,7 +113,9 @@
   height: 2px;
   background: #f0f4f8;
   border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s;
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
   transform-origin: center;
 }
 
@@ -125,16 +134,16 @@
 /* ── Drawer overlay ── */
 .drawer-overlay {
   display: none;
-  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.65);
   z-index: 998;
-  opacity: 0;
+  opacity: 0.7;
   transition: opacity 0.3s;
 }
 
 .drawer-overlay.visible {
   opacity: 1;
+  position: fixed;
 }
 
 /* ── Side drawer ── */
@@ -145,7 +154,7 @@
   width: 280px;
   height: 100vh;
   background: #0d1520;
-  border-left: 1px solid rgba(255,255,255,0.08);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 999;
   display: flex;
   flex-direction: column;
@@ -163,12 +172,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   margin-bottom: 12px;
 }
 
 .drawer-logo {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: 1.25rem;
   font-weight: 800;
   color: #f0f4f8;
@@ -177,7 +186,7 @@
 .drawer-close {
   width: 32px;
   height: 32px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   border: none;
   border-radius: 8px;
   color: #8b9ab0;
@@ -186,9 +195,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
-.drawer-close:hover { background: rgba(232,184,75,0.12); color: #e8b84b; }
+.drawer-close:hover {
+  background: rgba(232, 184, 75, 0.12);
+  color: #e8b84b;
+}
 
 .drawer-links {
   list-style: none;
@@ -205,7 +219,9 @@
   color: #8b9ab0;
   font-size: 1rem;
   font-weight: 500;
-  transition: background 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s;
 }
 
 .drawer-links li a:hover,
@@ -216,7 +232,13 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .nav-links        { display: none; }
-  .nav-hamburger    { display: flex; }
-  .drawer-overlay   { display: block; }
+  .nav-links {
+    display: none;
+  }
+  .nav-hamburger {
+    display: flex;
+  }
+  .drawer-overlay {
+    display: block;
+  }
 }
