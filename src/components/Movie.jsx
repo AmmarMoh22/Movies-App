@@ -28,6 +28,8 @@ const Movie = ({ name, desc, img, id, tmdbId, isWatchlist }) => {
       <div className="movie-card">
         <div className="movie-card-img-wrap">
           <img src={img} className="movie-card-img" alt={name} loading="lazy" />
+
+          {/* Desktop only — revealed on mouse hover */}
           <div className="movie-card-overlay">
             <Link to={`/movie/${movieId}`} className="overlay-btn">
               View Details
@@ -38,6 +40,11 @@ const Movie = ({ name, desc, img, id, tmdbId, isWatchlist }) => {
         <div className="movie-card-body">
           <h5 className="movie-card-title">{name}</h5>
           <p className="movie-card-desc">{desc}</p>
+
+          {/* Mobile only — always visible link (shown via @media hover:none) */}
+          <Link to={`/movie/${movieId}`} className="mobile-details-btn">
+            View Details
+          </Link>
 
           {isWatchlist ? (
             <button onClick={handleRemove} className="btn-movie btn-remove">
