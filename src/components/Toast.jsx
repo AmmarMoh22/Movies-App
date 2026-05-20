@@ -1,20 +1,6 @@
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
-/**
- * Reusable toast notification built on MUI Snackbar.
- *
- * Usage:
- *   const [toast, setToast] = useState({ open: false, message: "", severity: "success" });
- *
- *   // trigger it:
- *   setToast({ open: true, message: "Added!", severity: "success" });
- *
- *   // in JSX:
- *   <Toast toast={toast} onClose={() => setToast((t) => ({ ...t, open: false }))} />
- *
- * severity options: "success" | "error" | "warning" | "info"
- */
 export default function Toast({ toast, onClose }) {
   return (
     <Snackbar
